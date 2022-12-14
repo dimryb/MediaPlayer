@@ -1,9 +1,8 @@
 package ru.netology.mediaplayer
 
-import android.media.MediaPlayer
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
+import android.widget.Button
+import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -15,11 +14,11 @@ class MainActivity : AppCompatActivity() {
 
         lifecycle.addObserver(observer)
 
-        findViewById<View>(R.id.play).setOnClickListener {
+        findViewById<Button>(R.id.play).setOnClickListener {
             observer.apply {
-                resources.openRawResourceFd(R.raw.ring).use { afd->
-                    mediaPlayer?.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
-                }
+                mediaPlayer?.setDataSource(
+                    "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"
+                )
             }.play()
         }
     }
