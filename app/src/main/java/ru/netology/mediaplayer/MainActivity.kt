@@ -6,12 +6,21 @@ import android.os.Bundle
 import android.view.View
 
 class MainActivity : AppCompatActivity() {
+
+    private val observer = MediaLifecycleObserver()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        lifecycle.addObserver(observer)
+
         findViewById<View>(R.id.play).setOnClickListener {
-            MediaPlayer.create(this, R.raw.ring).start()
+            observer.apply {
+                resources.openRawResourceFd(R.raw.ring).use { afd->
+                    mediaPlayer?.setDataSource(afd.fileDescriptor, afd.startOffset, afd.length)
+                }
+            }.play()
         }
     }
 }
